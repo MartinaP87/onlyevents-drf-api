@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import generics
-from drf_api_event.permissions import IsAdminOrReadOnly
+from onlyevents_drf_api.permissions import IsAdminOrReadOnly
 from .models import Category, Genre
 from .serializers import CategorySerializer, GenreSerializer
 
