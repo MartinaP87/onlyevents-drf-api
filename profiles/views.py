@@ -4,6 +4,7 @@ from rest_framework import generics, permissions
 from .models import Profile, Preference
 from .serializers import ProfileSerializer, PreferenceSerializer
 from onlyevents_drf_api.permissions import IsOwnerOrReadOnly
+from onlyevents_drf_api.permissions import IsProfileOwnerOrReadOnly
 
 
 class ProfileList(generics.ListAPIView):
@@ -28,6 +29,6 @@ class PreferenceList(generics.ListCreateAPIView):
 
 class PreferenceDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly]
+        permissions.IsAuthenticatedOrReadOnly, IsProfileOwnerOrReadOnly]
     queryset = Preference.objects.all()
     serializer_class = PreferenceSerializer
