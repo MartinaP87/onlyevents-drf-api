@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Event, Gallery, Photo, EventGenre
 
-# Register your models here.
+admin.site.register(Event)
+admin.site.register(Gallery)
+admin.site.register(Photo)
+admin.site.register(EventGenre)
