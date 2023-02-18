@@ -2,6 +2,8 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
 from rest_framework import generics, permissions
 from onlyevents_drf_api.permissions import IsOwnerOrReadOnly
+from onlyevents_drf_api.permissions import IsEventOwnerOrReadOnly
+from onlyevents_drf_api.permissions import IsGalleryOwnerOrReadOnly
 from .models import Event, Gallery, Photo, EventGenre
 from .serializers import EventSerializer, GallerySerializer
 from .serializers import PhotoSerializer, PhotoDetailSerializer
@@ -29,6 +31,7 @@ class GalleryList(generics.ListAPIView):
 
 
 class GalleryDetail(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsGalleryOwnerOrReadOnly]
     serializer_class = GallerySerializer
     queryset = Gallery.objects.all()
 
@@ -65,5 +68,6 @@ class EventGenreList(generics.ListCreateAPIView):
 
 
 class EventGenreDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsEventOwnerOrReadOnly]
     serializer_class = EventGenreDetailSerializer
     queryset = EventGenre.objects.all()
