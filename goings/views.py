@@ -5,6 +5,9 @@ from .serializers import GoingSerializer
 
 
 class GoingList(generics.ListCreateAPIView):
+    """
+    List goings or create a going if logged in.
+    """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = GoingSerializer
     queryset = Going.objects.all()
@@ -14,6 +17,9 @@ class GoingList(generics.ListCreateAPIView):
 
 
 class GoingDetail(generics.RetrieveDestroyAPIView):
+    """
+    Retrieve a going, or delete it by id if you own it.
+    """
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = GoingSerializer
     queryset = Going.objects.all()

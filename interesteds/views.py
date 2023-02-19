@@ -5,6 +5,9 @@ from .serializers import InterestedSerializer
 
 
 class InterestedList(generics.ListCreateAPIView):
+    """
+    List interesteds or create an interested if logged in.
+    """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = InterestedSerializer
     queryset = Interested.objects.all()
@@ -14,6 +17,9 @@ class InterestedList(generics.ListCreateAPIView):
 
 
 class InterestedDetail(generics.RetrieveDestroyAPIView):
+    """
+    Retrieve an interested, or delete it by id if you own it.
+    """
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = InterestedSerializer
     queryset = Interested.objects.all()

@@ -9,6 +9,11 @@ from .serializers import CommentSerializer, CommentDetailSerializer
 class CommentList(generics.ListCreateAPIView):
     """
     List comments or create a comment if logged in.
+    Define and add to the queryset a like_count field.
+    -Filter comments with a given profile id so that
+    we can retrieve all comments of a specific user.
+    -Filter comments with a given event id to retrieve
+    the comments of a specific event.
     """
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

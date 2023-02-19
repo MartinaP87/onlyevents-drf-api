@@ -13,11 +13,29 @@ from .serializers import EventGenreSerializer, EventGenreDetailSerializer
 
 
 class EventList(generics.ListCreateAPIView):
+    """
+    List events or create an event if logged in.
+    Define and add to the queryset a comments_count,
+    interesteds_count, and goings_count fields.
+    -Filter events with followers so that
+    we can retrieve all events belonging to the users
+    followed by a given profile id.
+    -Filter events with interested so that
+    we can retrieve all events a user is interested
+    in by giving their profile id.
+    -Filter events with goings so that
+    we can retrieve all events a user is going to,
+    by giving their profile id.
+    -Filter events with a given profile id to
+    retrieve all events posted by a specific user.
+    -Filter events by category.
+    -Filter events by their genre.
+    """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = EventSerializer
     queryset = Event.objects.annotate(
         comments_count=Count('comment', distinct=True),
-        interested_count=Count('interesteds', distinct=True),
+        interesteds_count=Count('interesteds', distinct=True),
         goings_count=Count('goings', distinct=True)
     ).order_by('-created_at')
 
@@ -41,7 +59,7 @@ class EventList(generics.ListCreateAPIView):
     ]
     ordering_fields = [
         'comments_count',
-        'interested_count',
+        'interesteds_count',
         'goings_count'
     ]
 
@@ -50,27 +68,46 @@ class EventList(generics.ListCreateAPIView):
 
 
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve an event, or update or delete it by id if you own it.
+    """
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = EventSerializer
     queryset = Event.objects.annotate(
         comments_count=Count('comment', distinct=True),
-        interested_count=Count('interesteds', distinct=True),
+        interesteds_count=Count('interesteds', distinct=True),
         goings_count=Count('goings', distinct=True)
     ).order_by('-created_at')
 
 
 class GalleryList(generics.ListAPIView):
+    """
+    List galleries.
+    """
     serializer_class = GallerySerializer
     queryset = Gallery.objects.all()
 
 
 class GalleryDetail(generics.RetrieveUpdateAPIView):
+    """
+        Retrieve a gallery, or update it by id if you own it.
+    """
     permission_classes = [IsGalleryOwnerOrReadOnly]
     serializer_class = GallerySerializer
     queryset = Gallery.objects.all()
 
 
 class PhotoList(generics.ListCreateAPIView):
+    """
+    List photos or create a photo if logged in.
+    -Filter photos with a given profile id to
+    retrieve all photos posted by a specific user.
+    - Filter photos with the event to retrieve all photos
+    of a specific event by a given event id.
+     -Filter photos with followers so we can
+    retrieve all photos belonging to the users
+    followed by a given profile id.
+    """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = PhotoSerializer
     queryset = Photo.objects.all()
@@ -88,12 +125,20 @@ class PhotoList(generics.ListCreateAPIView):
 
 
 class PhotoDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+        Retrieve a photo, or update, or delete it by id if you own it.
+    """
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = PhotoDetailSerializer
     queryset = Photo.objects.all()
 
 
 class EventGenreList(generics.ListCreateAPIView):
+    """
+    List event genres or create an event genre if
+    owner of the event to which the genre is related, and
+    if the genre category and the event category match.
+    """
     serializer_class = EventGenreSerializer
     queryset = EventGenre.objects.all()
 
@@ -110,6 +155,10 @@ class EventGenreList(generics.ListCreateAPIView):
 
 
 class EventGenreDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+        Retrieve an event genre, or update it by id if
+        you own the event to which the genre is related.
+    """
     permission_classes = [IsEventOwnerOrReadOnly]
     serializer_class = EventGenreDetailSerializer
     queryset = EventGenre.objects.all()

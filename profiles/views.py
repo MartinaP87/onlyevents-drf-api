@@ -10,6 +10,17 @@ from onlyevents_drf_api.permissions import IsProfileOwnerOrReadOnly
 
 
 class ProfileList(generics.ListAPIView):
+    """
+    List profiles.
+    Define and add to the queryset events_count,
+    followers_count, and following_count fields.
+    -Filter profiles with followers so that
+    we can retrieve all profiles that follow a user
+    by the user profile id.
+    -Filter profiles with followers so that
+    we can retrieve all profiles belonging to the users
+    followed by a given profile id.
+    """
     serializer_class = ProfileSerializer
     queryset = Profile.objects.annotate(
         events_count=Count('owner__event', distinct=True),
@@ -32,6 +43,9 @@ class ProfileList(generics.ListAPIView):
 
 
 class ProfileDetail(generics.RetrieveUpdateAPIView):
+    """
+    Retrieve a profile, or update it by id if you own it.
+    """
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ProfileSerializer
     queryset = Profile.objects.annotate(
@@ -42,6 +56,12 @@ class ProfileDetail(generics.RetrieveUpdateAPIView):
 
 
 class PreferenceList(generics.ListCreateAPIView):
+    """
+    List preferences or create a preference if logged in.
+    -Filter preferences with profiles so that
+    we can retrieve all preferences belonging to a user
+    by a given profile id.
+    """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = PreferenceSerializer
     queryset = Preference.objects.all()
@@ -57,6 +77,10 @@ class PreferenceList(generics.ListCreateAPIView):
 
 
 class PreferenceDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve a preference, update, or delete it by id if you
+    own the profile to which the preference is related.
+    """
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsProfileOwnerOrReadOnly]
     queryset = Preference.objects.all()
