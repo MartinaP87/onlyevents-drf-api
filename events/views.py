@@ -1,6 +1,8 @@
 from rest_framework.exceptions import ValidationError
 from rest_framework.views import APIView
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters
+from django.db.models import Count
+from django_filters.rest_framework import DjangoFilterBackend
 from onlyevents_drf_api.permissions import IsOwnerOrReadOnly
 from onlyevents_drf_api.permissions import IsEventOwnerOrReadOnly
 from onlyevents_drf_api.permissions import IsGalleryOwnerOrReadOnly
@@ -13,7 +15,35 @@ from .serializers import EventGenreSerializer, EventGenreDetailSerializer
 class EventList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = EventSerializer
-    queryset = Event.objects.all()
+    queryset = Event.objects.annotate(
+        comments_count=Count('comment', distinct=True),
+        interested_count=Count('interesteds', distinct=True),
+        goings_count=Count('goings', distinct=True)
+    ).order_by('-created_at')
+
+    filter_backends = [
+        filters.OrderingFilter,
+        filters.SearchFilter,
+        DjangoFilterBackend
+    ]
+    search_fields = [
+        'owner__username',
+        'title',
+        'date'
+    ]
+    filterset_fields = [
+        'owner__followed__owner__profile',
+        'interesteds__owner__profile',
+        'goings__owner__profile',
+        'owner__profile',
+        'category',
+        'event_genres__genre'
+    ]
+    ordering_fields = [
+        'comments_count',
+        'interested_count',
+        'goings_count'
+    ]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -22,7 +52,11 @@ class EventList(generics.ListCreateAPIView):
 class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = EventSerializer
-    queryset = Event.objects.all()
+    queryset = Event.objects.annotate(
+        comments_count=Count('comment', distinct=True),
+        interested_count=Count('interesteds', distinct=True),
+        goings_count=Count('goings', distinct=True)
+    ).order_by('-created_at')
 
 
 class GalleryList(generics.ListAPIView):
@@ -40,6 +74,14 @@ class PhotoList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = PhotoSerializer
     queryset = Photo.objects.all()
+    filter_backends = [
+        DjangoFilterBackend
+    ]
+    filterset_fields = [
+        'owner__profile',
+        'gallery__posted_event',
+        'owner__followed__owner__profile'
+    ]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
