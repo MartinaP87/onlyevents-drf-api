@@ -146,11 +146,6 @@ class EventGenreList(generics.ListCreateAPIView):
         if (self.request.user != serializer.validated_data['event'].owner):
             raise ValidationError(
                 "You cannot add a genre to someone else event")
-        if serializer.validated_data[
-         'event'].category != serializer.validated_data['genre'].category:
-            raise ValidationError(
-                "You can't add a genre of a different event category"
-            )
         serializer.save()
 
 
@@ -160,5 +155,11 @@ class EventGenreDetail(generics.RetrieveUpdateDestroyAPIView):
         you own the event to which the genre is related.
     """
     permission_classes = [IsEventOwnerOrReadOnly]
-    serializer_class = EventGenreDetailSerializer
+    serializer_class = EventGenreSerializer
     queryset = EventGenre.objects.all()
+
+    def perform_update(self, serializer):
+        if (self.request.user != serializer.validated_data['event'].owner):
+            raise ValidationError(
+                "You cannot add a genre to someone else event")
+        serializer.save()

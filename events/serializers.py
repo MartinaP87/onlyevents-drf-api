@@ -97,6 +97,14 @@ class EventGenreSerializer(serializers.ModelSerializer):
     def get_event_category(self, obj):
         return obj.event.category.cat_name
 
+    def validate(self, value):
+        print("VALUE", value)
+        if value['event'].category != value['genre'].category:
+            raise serializers.ValidationError(
+                'The event catogory and its genre category must match'
+            )
+        return value
+
     class Meta:
         model = EventGenre
         fields = [
