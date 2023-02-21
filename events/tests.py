@@ -10,20 +10,20 @@ import io
 class EventListViewTests(APITestCase):
     def setUp(self):
         User.objects.create_user(username='marla', password='pass')
-        Category.objects.create(cat_name='concert')
+        Category.objects.create(cat_name='music')
 
     def test_can_list_events(self):
-        concert = Category.objects.get(cat_name='concert')
+        music = Category.objects.get(cat_name='music')
         marla = User.objects.get(username='marla')
         Event.objects.create(
-            owner=marla, title='a title', category=concert,
+            owner=marla, title='a title', category=music,
             date='2020-11-28T19:24:58.478641+05:30', location='a location',
             address='an address')
         response = self.client.get('/events/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_logged_in_user_can_create_an_event(self):
-        Category.objects.get(cat_name='concert')
+        Category.objects.get(cat_name='music')
         self.client.login(username='marla', password='pass')
         response = self.client.post(
             '/events/', {'title': 'a title',
@@ -36,10 +36,10 @@ class EventListViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_user_not_logged_in_cant_create_event(self):
-        concert = Category.objects.get(cat_name='concert')
+        music = Category.objects.get(cat_name='music')
         response = self.client.post(
             '/events/', {'title': 'a title',
-                         'category': concert,
+                         'category': music,
                          'date': '2020-11-28T19:24:58.478641+05:30',
                          'location': 'a location',
                          'address': 'an address'})
@@ -48,15 +48,15 @@ class EventListViewTests(APITestCase):
 
 class EventDetailViewTests(APITestCase):
     def setUp(self):
-        concert = Category.objects.create(cat_name='concert')
+        music = Category.objects.create(cat_name='music')
         marla = User.objects.create_user(username='marla', password='pass')
         adam = User.objects.create_user(username='adam', password='pass')
-        Event.objects.create(owner=marla, title='a title', category=concert,
+        Event.objects.create(owner=marla, title='a title', category=music,
                              date='2020-11-28T19:24:58.478641+05:30',
                              location='a location',
                              address='an address')
         Event.objects.create(owner=adam, title='another title',
-                             category=concert,
+                             category=music,
                              date='2020-11-28T19:24:58.478641+05:30',
                              location='another location',
                              address='another address')
@@ -71,7 +71,7 @@ class EventDetailViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_user_can_update_own_event(self):
-        concert = Category.objects.get(cat_name='concert')
+        music = Category.objects.get(cat_name='music')
         self.client.login(username='marla', password='pass')
         response = self.client.put(
             '/events/1/', {'title': 'a new title',
@@ -84,7 +84,7 @@ class EventDetailViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_cant_update_another_users_event(self):
-        concert = Category.objects.get(cat_name='concert')
+        music = Category.objects.get(cat_name='music')
         self.client.login(username='marla', password='pass')
         response = self.client.put(
             '/events/2/', {'title': 'a new title',
@@ -114,9 +114,9 @@ class EventDetailViewTests(APITestCase):
 class GalleryListViewTests(APITestCase):
     def setUp(self):
         marla = User.objects.create_user(username='marla', password='pass')
-        concert = Category.objects.create(cat_name='concert')
+        music = Category.objects.create(cat_name='music')
         event = Event.objects.create(
-            owner=marla, title='a title', category=concert,
+            owner=marla, title='a title', category=music,
             date='2020-11-28T19:24:58.478641+05:30',
             location='a location',  address='an address')
 
@@ -125,10 +125,10 @@ class GalleryListViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_galley_creates_when_an_event_is_created(self):
-        concert = Category.objects.get(cat_name='concert')
+        music = Category.objects.get(cat_name='music')
         marla = User.objects.get(username='marla')
         event2 = Event.objects.create(
-            owner=marla, title='second title', category=concert,
+            owner=marla, title='second title', category=music,
             date='2020-11-22T19:24:58.478641+05:30',
             location='second location',  address='second address')
 
@@ -140,17 +140,17 @@ class GalleryListViewTests(APITestCase):
 
 class GalleryDetailViewTests(APITestCase):
     def setUp(self):
-        concert = Category.objects.create(cat_name='concert')
+        music = Category.objects.create(cat_name='music')
         marla = User.objects.create_user(username='marla', password='pass')
         adam = User.objects.create_user(username='adam', password='pass')
         Event.objects.create(
-            owner=marla, title='a title', category=concert,
+            owner=marla, title='a title', category=music,
             date='2020-11-28T19:24:58.478641+05:30',
             location='a location',
             address='an address')
         Event.objects.create(
             owner=adam, title='another title',
-            category=concert,
+            category=music,
             date='2020-11-28T19:24:58.478641+05:30',
             location='another location',
             address='another address')
@@ -191,9 +191,9 @@ class PhotoListViewTests(APITestCase):
     def setUp(self):
         marla = User.objects.create_user(username='marla', password='pass')
         peter = User.objects.create_user(username='peter', password='pass')
-        concert = Category.objects.create(cat_name='concert')
+        music = Category.objects.create(cat_name='music')
         event = Event.objects.create(
-            owner=marla, title='a title', category=concert,
+            owner=marla, title='a title', category=music,
             date='2020-11-28T19:24:58.478641+05:30',
             location='a location',  address='an address')
 
@@ -240,14 +240,14 @@ class PhotoDetailViewTests(APITestCase):
     def setUp(self):
         marla = User.objects.create_user(username='marla', password='pass')
         peter = User.objects.create_user(username='peter', password='pass')
-        concert = Category.objects.create(cat_name='concert')
+        music = Category.objects.create(cat_name='music')
         event1 = Event.objects.create(
-            owner=marla, title='a title', category=concert,
+            owner=marla, title='a title', category=music,
             date='2020-11-28T19:24:58.478641+05:30',
             location='a location',  address='an address')
         event2 = Event.objects.create(
             owner=peter, title='another title',
-            category=concert,
+            category=music,
             date='2020-11-28T19:24:58.478641+05:30',
             location='another location',
             address='another address')
@@ -314,21 +314,21 @@ class PhotoDetailViewTests(APITestCase):
 
 class EventGenreListViewTests(APITestCase):
     def setUp(self):
-        concert = Category.objects.create(cat_name='concert')
+        music = Category.objects.create(cat_name='music')
         marla = User.objects.create_user(username='marla', password='pass')
         peter = User.objects.create_user(username='peter', password='pass')
-        Event.objects.create(owner=marla, title='a title', category=concert,
+        Event.objects.create(owner=marla, title='a title', category=music,
                              date='2020-11-28T19:24:58.478641+05:30',
                              location='a location',
                              address='an address')
         Event.objects.create(owner=peter, title='another title',
-                             category=concert,
+                             category=music,
                              date='2020-11-28T19:24:58.478641+05:30',
                              location='another location',
                              address='another address')
 
     def test_can_list_event_genres(self):
-        category = Category.objects.create(cat_name='concert')
+        category = Category.objects.create(cat_name='music')
         genre = Genre.objects.create(category=category, gen_name='Rock')
         event = Event.objects.get(pk=1)
         EventGenre.objects.create(event=event, genre=genre)
@@ -373,15 +373,15 @@ class EventGenreDetailViewTests(APITestCase):
     def setUp(self):
         marla = User.objects.create_user(username='marla', password='pass')
         peter = User.objects.create_user(username='peter', password='pass')
-        concert = Category.objects.create(cat_name='concert')
-        genre1 = Genre.objects.create(category=concert, gen_name='Metal')
-        genre2 = Genre.objects.create(category=concert, gen_name='Folk')
+        music = Category.objects.create(cat_name='music')
+        genre1 = Genre.objects.create(category=music, gen_name='Metal')
+        genre2 = Genre.objects.create(category=music, gen_name='Folk')
         event1 = Event.objects.create(
-            owner=marla, title='a title', category=concert,
+            owner=marla, title='a title', category=music,
             date='2020-11-28T19:24:58.478641+05:30',
             location='a location', address='an address')
         event2 = Event.objects.create(
-            owner=peter, title='another title', category=concert,
+            owner=peter, title='another title', category=music,
             date='2020-11-28T19:24:58.478641+05:30',
             location='another location', address='another address')
         eventgenre1 = EventGenre.objects.create(event=event1, genre=genre1)

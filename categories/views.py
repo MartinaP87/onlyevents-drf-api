@@ -11,7 +11,7 @@ class CategoryList(generics.ListCreateAPIView):
     """
     List categories or create a category if superuser.
     """
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
