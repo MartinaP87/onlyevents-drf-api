@@ -57,7 +57,7 @@ class ProfileDetailViewTests(APITestCase):
 class PreferenceListViewTests(APITestCase):
     def setUp(self):
         User.objects.create_user(username='marla', password='pass')
-        category = Category.objects.create(cat_name='concert')
+        category = Category.objects.create(cat_name='music')
         genre1 = Genre.objects.create(category=category, gen_name='Rock')
         genre2 = Genre.objects.create(category=category, gen_name='Folk')
 
@@ -91,7 +91,7 @@ class PreferenceDetailViewTests(APITestCase):
         User.objects.create_user(username='peter', password='pass')
         marla = Profile.objects.get(pk=1)
         peter = Profile.objects.get(pk=2)
-        category = Category.objects.create(cat_name='concert')
+        category = Category.objects.create(cat_name='music')
         genre1 = Genre.objects.create(category=category, gen_name='Rock')
         genre2 = Genre.objects.create(category=category, gen_name='Folk')
         preference1 = Preference.objects.create(profile=marla, genre=genre1)
