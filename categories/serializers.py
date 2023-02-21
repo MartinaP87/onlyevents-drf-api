@@ -14,10 +14,13 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class GenreSerializer(serializers.ModelSerializer):
     gen_name = serializers.CharField()
-    category = serializers.ReadOnlyField(source='category.cat_name')
+    category_name = serializers.SerializerMethodField()
+
+    def get_category_name(self, obj):
+        return obj.category.cat_name
 
     class Meta:
         model = Genre
         fields = [
-            'id', 'gen_name', 'category'
+            'id', 'gen_name', 'category', 'category_name'
         ]

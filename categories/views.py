@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework import generics
+from rest_framework import generics, permissions
+from rest_framework.exceptions import ValidationError
 from onlyevents_drf_api.permissions import IsAdminOrReadOnly
 from .models import Category, Genre
 from .serializers import CategorySerializer, GenreSerializer
@@ -10,12 +11,15 @@ class CategoryList(generics.ListCreateAPIView):
     """
     List categories or create a category if superuser.
     """
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
     def perform_create(self, serializer):
         if self.request.user.is_superuser:
             return serializer.save()
+        raise ValidationError(
+                "You cannot create a category")
 
 
 class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -31,12 +35,15 @@ class GenreList(generics.ListCreateAPIView):
     """
     List genres or create a genre if superuser.
     """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = GenreSerializer
     queryset = Genre.objects.all()
 
     def perform_create(self, serializer):
         if self.request.user.is_superuser:
             return serializer.save()
+        raise ValidationError(
+                "You cannot create a genre")
 
 
 class GenreDetail(generics.RetrieveUpdateDestroyAPIView):
