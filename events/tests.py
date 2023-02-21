@@ -430,7 +430,7 @@ class EventGenreDetailViewTests(APITestCase):
                                   'genre': genre2.id})
         eventgenre1 = EventGenre.objects.filter(pk=1).first()
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        
+
     def test_user_can_delete_own_eventgenre(self):
         eventgenre1 = EventGenre.objects.get(pk=1)
         self.client.login(username='marla', password='pass')
