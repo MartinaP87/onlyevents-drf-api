@@ -50,7 +50,8 @@ JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
 
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'onlyevents_drf_api.serializers.CurrentUserSerializer'
+    'USER_DETAILS_SERIALIZER':
+    'onlyevents_drf_api.serializers.CurrentUserSerializer'
 }
 
 # Quick-start development settings - unsuitable for production
@@ -113,6 +114,9 @@ if 'CLIENT_ORIGIN' in os.environ:
         os.environ.get('CLIENT_ORIGIN')
     ]
 
+    print("AAA", CORS_ALLOWED_ORIGIN)
+    print("DDD", os.environ.get(CLIENT_ORIGIN_DEV))
+
 if 'CLIENT_ORIGIN_DEV' in os.environ:
     extracted_url = re.match(
         r'^.+-', os.environ.get(
@@ -120,6 +124,8 @@ if 'CLIENT_ORIGIN_DEV' in os.environ:
     CORS_ALLOWED_ORIGIN_REGEXES = [
         rf"{extracted_url}(eu|us)\d+\w\.gitpod\.io$",
     ]
+    print("BBB", CORS_ALLOWED_ORIGIN_REGEXES)
+    print("CCC", os.environ.get(CLIENT_ORIGIN_DEV))
 
 CORS_ALLOW_CREDENTIALS = True
 
