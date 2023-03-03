@@ -29,7 +29,7 @@ class EventSerializer(serializers.ModelSerializer):
             ).first()
             return interested.id if interested else None
         return None
-    
+
     def get_going_id(self, obj):
         user = self.context['request'].user
         if user.is_authenticated:
