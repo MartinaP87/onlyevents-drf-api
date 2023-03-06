@@ -36,7 +36,7 @@ class Photo(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/', blank=True)
 
     def __str__(self):
         return f"{self.title}"

@@ -8,6 +8,7 @@ from goings.models import Going
 class EventSerializer(serializers.ModelSerializer):
     event_genres = serializers.StringRelatedField(many=True)
     owner = serializers.ReadOnlyField(source='owner.username')
+    category_name = serializers.ReadOnlyField(source='category.cat_name')
     is_owner = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
     interested_id = serializers.SerializerMethodField()
@@ -42,7 +43,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = [
-            'id', 'owner', 'category', 'title', 'date',
+            'id', 'owner', 'category', 'category_name', 'title', 'date',
             'location', 'address', 'created_at', 'updated_at',
             'content', 'image', 'is_owner', 'event_genres',
             'comments_count', 'interested_id', 'interesteds_count',

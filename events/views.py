@@ -141,6 +141,12 @@ class EventGenreList(generics.ListCreateAPIView):
     """
     serializer_class = EventGenreSerializer
     queryset = EventGenre.objects.all()
+    filter_backends = [
+        DjangoFilterBackend
+    ]
+    filterset_fields = [
+        'event'
+    ]
 
     def perform_create(self, serializer):
         if (self.request.user != serializer.validated_data['event'].owner):
