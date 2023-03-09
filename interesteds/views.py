@@ -1,7 +1,8 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters
 from onlyevents_drf_api.permissions import IsOwnerOrReadOnly
 from .models import Interested
 from .serializers import InterestedSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class InterestedList(generics.ListCreateAPIView):
@@ -11,6 +12,13 @@ class InterestedList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = InterestedSerializer
     queryset = Interested.objects.all()
+    filter_backends = [
+        DjangoFilterBackend
+    ]
+    filterset_fields = [
+        'owner',
+        'posted_event'
+    ]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

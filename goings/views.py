@@ -1,7 +1,8 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters
 from onlyevents_drf_api.permissions import IsOwnerOrReadOnly
 from .models import Going
 from .serializers import GoingSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class GoingList(generics.ListCreateAPIView):
@@ -11,6 +12,13 @@ class GoingList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = GoingSerializer
     queryset = Going.objects.all()
+    filter_backends = [
+        DjangoFilterBackend
+    ]
+    filterset_fields = [
+        'owner',
+        'posted_event'
+    ]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

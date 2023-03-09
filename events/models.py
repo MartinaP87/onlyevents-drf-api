@@ -38,6 +38,9 @@ class Photo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='images/', blank=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
     def __str__(self):
         return f"{self.title}"
 
@@ -47,6 +50,9 @@ class EventGenre(models.Model):
         Event, on_delete=models.CASCADE, related_name='event_genres')
     genre = models.ForeignKey(
         Genre, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ['event', 'genre']
 
     def __str__(self):
         return self.genre.gen_name

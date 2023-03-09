@@ -112,12 +112,17 @@ class PhotoList(generics.ListCreateAPIView):
     serializer_class = PhotoSerializer
     queryset = Photo.objects.all()
     filter_backends = [
+        filters.OrderingFilter,
         DjangoFilterBackend
     ]
     filterset_fields = [
         'owner__profile',
         'gallery__posted_event',
         'owner__followed__owner__profile'
+    ]
+
+    ordering_fields = [
+        'created_at',
     ]
 
     def perform_create(self, serializer):

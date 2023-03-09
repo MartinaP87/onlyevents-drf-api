@@ -38,6 +38,7 @@ class PreferenceSerializer(serializers.ModelSerializer):
     profile = serializers.ReadOnlyField(source='profile.owner.username')
     is_owner = serializers.SerializerMethodField()
     genre_name = serializers.SerializerMethodField()
+    category = serializers.ReadOnlyField(source='genre.category.cat_name')
 
     def get_genre_name(self, obj):
         return obj.genre.gen_name
@@ -49,5 +50,6 @@ class PreferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Preference
         fields = [
-            'id', 'profile', 'genre', 'genre_name', 'is_owner'
+            'id', 'profile', 'genre', 'genre_name',
+            'is_owner', 'category'
         ]
