@@ -58,9 +58,7 @@ class EventList(generics.ListCreateAPIView):
         'event_genres__genre__preference__profile'
     ]
     ordering_fields = [
-        'comments_count',
-        'interesteds_count',
-        'goings_count'
+        'date'
     ]
 
     def perform_create(self, serializer):
