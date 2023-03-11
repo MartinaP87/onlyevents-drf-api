@@ -328,7 +328,7 @@ class EventGenreListViewTests(APITestCase):
                              address='another address')
 
     def test_can_list_event_genres(self):
-        category = Category.objects.create(cat_name='music')
+        category = Category.objects.get(cat_name='music')
         genre = Genre.objects.create(category=category, gen_name='Rock')
         event = Event.objects.get(pk=1)
         EventGenre.objects.create(event=event, genre=genre)
