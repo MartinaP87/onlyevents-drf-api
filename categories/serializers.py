@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Category, Genre
+from django.db import IntegrityError
 
 
 class CategorySerializer(serializers.ModelSerializer):

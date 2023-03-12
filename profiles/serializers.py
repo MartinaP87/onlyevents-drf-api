@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Profile, Preference
 from followers.models import Follower
+from django.db import IntegrityError
 
 
 class ProfileSerializer(serializers.ModelSerializer):

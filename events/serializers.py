@@ -3,6 +3,7 @@ from .models import Event, Gallery, Photo, EventGenre
 from categories.models import Category
 from interesteds.models import Interested
 from goings.models import Going
+from django.db import IntegrityError
 
 
 class EventSerializer(serializers.ModelSerializer):
