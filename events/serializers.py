@@ -143,6 +143,14 @@ class EventGenreSerializer(serializers.ModelSerializer):
             'genre_category', 'event_category'
         ]
 
+    def create(self, validated_data):
+        try:
+            return super().create(validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError({
+                'detail': 'possible duplicate'
+            })
+
 
 class EventGenreDetailSerializer(EventGenreSerializer):
     """

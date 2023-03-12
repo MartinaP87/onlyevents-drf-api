@@ -11,6 +11,14 @@ class CategorySerializer(serializers.ModelSerializer):
             'id', 'cat_name'
         ]
 
+    def create(self, validated_data):
+        try:
+            return super().create(validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError({
+                'detail': 'possible duplicate'
+            })
+
 
 class GenreSerializer(serializers.ModelSerializer):
     gen_name = serializers.CharField()
@@ -24,3 +32,11 @@ class GenreSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'gen_name', 'category', 'category_name'
         ]
+
+    def create(self, validated_data):
+        try:
+            return super().create(validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError({
+                'detail': 'possible duplicate'
+            })

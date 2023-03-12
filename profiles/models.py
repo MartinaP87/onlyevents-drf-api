@@ -25,6 +25,9 @@ class Preference(models.Model):
         Profile, on_delete=models.CASCADE, related_name='preferences')
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ['profile', 'genre']
+
     def __str__(self):
         return self.genre.gen_name
 

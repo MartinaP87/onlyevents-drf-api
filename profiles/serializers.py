@@ -53,3 +53,11 @@ class PreferenceSerializer(serializers.ModelSerializer):
             'id', 'profile', 'genre', 'genre_name',
             'is_owner', 'category'
         ]
+
+    def create(self, validated_data):
+        try:
+            return super().create(validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError({
+                'detail': 'possible duplicate'
+            })
