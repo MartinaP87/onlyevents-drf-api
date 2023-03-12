@@ -6,6 +6,7 @@ from goings.models import Going
 
 
 class EventSerializer(serializers.ModelSerializer):
+    date = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S")
     event_genres = serializers.StringRelatedField(many=True)
     owner = serializers.ReadOnlyField(source='owner.username')
     category_name = serializers.ReadOnlyField(source='category.cat_name')
