@@ -1,6 +1,51 @@
-## TESTING
+# Only Events DRF API
 
-### MANUAL TESTING
+This repository is the back-end REST API used by the front-end project Only Events.
+
+Visit the deployed website here - <a href="https://onyevents87.herokuapp.com/" target="_blank" rel="noopener">Only Events</a>.
+
+Visit the deployed API here - <a href="https://onlyevents-drf-api.herokuapp.com/" target="_blank" rel="noopener">Only Events</a>.
+
+You can view the front-end README.md here - <a href="https://github.com/MartinaP87/onlyevents87" target="_blank" rel="noopener">Only Events API README</a>
+
+## Table of contents
+1. [Project goals](#project-goals)
+2. [Entity Relationship Diagram](#entity-relationship-diagram)
+3. [Testing](#testing)
+   1. [Manual testing](#manual-testing)
+   2. [PEP8 validation](#pep8-validation)
+      1. [Categories](#categories)
+      2. [Comments](#comments)
+      3. [Events](#events)
+      4. [Followers](#followers)
+      5. [Goings](#goings)
+      6. [Interesteds](#interesteds)
+      7. [Likes](#likes)
+      8. [Profiles](#profiles)
+4. [Technologies used](#technologies-used)
+      1. [Languages](#languages)
+      2. [Libraries and Frameworks](#libraries-and-frameworks)
+      3. [Packages](#packages)
+      4. [Other tools](#other-tools)
+5. [Deployment]
+
+## Project goals
+
+The purpose of this project is to serve information to the user’s interface.
+It provides a secure and reliable source of data to be used in the Only Events front-end project.
+The API allows transferring of information between the interface and the database, which communicates by sending a .json file.
+
+## Entity Relationship Diagram
+
+The database model has been designed using Figma. 
+The diagram shows the relationships between the models in the database.
+The database used in development was SQLite3, and in production was  PostgreSQL, hosted by [ElephantSQL](https://www.elephantsql.com/).
+
+![Only Events-DRF-API ERD](readme_images/erd.png)
+
+## Testing
+
+### Manual Testing
 <table>
 <thead>
 <tr>
@@ -278,3 +323,271 @@ The can also update the gallery, but not delete it or create it, since it create
 <td>If the logged in user is the owner of the follower data, they can delete it.</td>
 <td>Yes</td>
 </tr>
+</tbody>
+</table>
+
+### PEP8 validation
+
+#### Onlyevents_drf_api
+
+**premissions.py**
+![onlyevents_drf_api_pep8](readme_images/permissions_pep8.png)
+**serializers.py**
+![onlyevents_drf_api_pep8](readme_images/serializers_pep8.png)
+**settings.py**
+![onlyevents_drf_api_pep8](readme_images/settings_pep8.png)
+**urls.py**
+![onlyevents_drf_api_pep8](readme_images/urls_pep8.png)
+**views.py**
+![onlyevents_drf_api_pep8](readme_images/views_pep8.png)
+**wsgi**
+![onlyevents_drf_api_pep8](readme_images/wsgi_pep8.png)
+
+#### Categories
+
+**admin.py**
+![onlyevents_drf_pep8_categories_admin](readme_images/categories_admin_pep8.png)
+**models.py**
+![onlyevents_drf_pep8_categories_models](readme_images/categories_models_pep8.png)
+**serializers.py**
+![onlyevents_drf_pep8_categories_serializers](readme_images/categories_serializers_pep8.png)
+**tests.py**
+![onlyevents_drf_pep8_categories_tests](readme_images/categories_tests_pep8.png)
+**urls.py**
+![onlyevents_drf_pep8_categories_urls](readme_images/categories_urls_pep8.png)
+**views.py**
+![onlyevents_drf_pep8_categories_views](readme_images/categories_views_pep8.png)
+
+#### Comments
+
+**models.py**
+![onlyevents_drf_pep8_comments_model](readme_images/comments_models_pep8.png)
+**serializers.py**
+![onlyevents_drf_pep8_comments_serializers](readme_images/comments_serializers_pep8.png)
+**tests.py**
+![onlyevents_drf_pep8_comments_tests](readme_images/comments_tests_pep8.png)
+**urls.py**
+![onlyevents_drf_pep8_comments_urls](readme_images/comments_urls_pep8.png)
+**views.py**
+![onlyevents_drf_pep8_comments_views](readme_images/comments_views_pep8.png)
+
+#### Events
+
+**admin.py**
+![onlyevents_drf_pep8_events_admin](readme_images/events_admin_pep8.png)
+**models.py**
+![onlyevents_drf_pep8_events_models](readme_images/events_models_pep8.png)
+**serializers.py**
+![onlyevents_drf_pep8_events_serializers](readme_images/events_serializers_pep8.png)
+**tests.py**
+![onlyevents_drf_pep8_events_tests](readme_images/events_tests_pep8.png)
+**urls.py**
+![onlyevents_drf_pep8_events_urls](readme_images/events_urls_pep8.png)
+**views.py**
+![onlyevents_drf_pep8_events_views](readme_images/events_views_pep8.png)
+
+#### Followers
+
+**models.py**
+![onlyevents_drf_pep8_followers_models](readme_images/followers_models_pep8.png)
+**serializers.py**
+![onlyevents_drf_pep8_followers_serializers](readme_images/followers_serializers_pep8.png)
+**tests.py**
+![onlyevents_drf_pep8_followers_tests](readme_images/followers_tests_pep8.png)
+**urls.py**
+![onlyevents_drf_pep8_followers_urls](readme_images/followers_urls_pep8.png)
+**views.py**
+![onlyevents_drf_pep8_followers_views](readme_images/followers_views_pep8.png)
+
+#### Goings
+
+**models.py**
+![onlyevents_drf_pep8_goings_models](readme_images/goings_models_pep8.png)
+**serializers.py**
+![onlyevents_drf_pep8_goings_serializers](readme_images/goings_serializers_pep8.png)
+**tests.py**
+![onlyevents_drf_pep8_goings_tests](readme_images/goings_tests_pep8.png)
+**urls.py**
+![onlyevents_drf_pep8_goings_urls](readme_images/goings_urls_pep8.png)
+**views.py**
+![onlyevents_drf_pep8_goings_views](readme_images/goings_views_pep8.png)
+
+#### Interesteds
+
+**models.py**
+![onlyevents_drf_pep8_interesteds_models](readme_images/interesteds_models_pep8.png)
+**serializers.py**
+![onlyevents_drf_pep8_interesteds_serializers](readme_images/interesteds_serializers_pep8.png)
+**tests.py**
+![onlyevents_drf_pep8_interesteds_tests](readme_images/interesteds_tests_pep8.png)
+**urls.py**
+![onlyevents_drf_pep8_interesteds_urls](readme_images/interesteds_urls_pep8.png)
+**views.py**
+![onlyevents_drf_pep8_interesteds_views](readme_images/interesteds_views_pep8.png)
+
+#### Likes
+
+**models.py**
+![onlyevents_drf_pep8_likes_models](readme_images/likes_models_pep8.png)
+**serializers.py**
+![onlyevents_drf_pep8_likes_serializers](readme_images/likes_serializers_pep8.png)
+**tests.py**
+![onlyevents_drf_pep8_likes_tests](readme_images/likes_tests_pep8.png)
+**urls.py**
+![onlyevents_drf_pep8_likes_urls](readme_images/likes_urls_pep8.png)
+**views.py**
+![onlyevents_drf_pep8_likes_views](readme_images/likes_views_pep8.png)
+
+#### Profiles
+
+**admin.py**
+![onlyevents_drf_pep8_profiles_admin](readme_images/profiles_admin_pep8.png)
+**models.py**
+![onlyevents_drf_pep8_profiles_models](readme_images/profiles_models_pep8.png)
+**serializers.py**
+![onlyevents_drf_pep8_profiles_serializers](readme_images/profiles_serializers_pep8.png)
+**tests.py**
+![onlyevents_drf_pep8_profiles_tests](readme_images/profiles_tests_pep8.png)
+**urls.py**
+![onlyevents_drf_pep8_profiles_urls](readme_images/profiles_urls_pep8.png)
+**views.py**
+![onlyevents_drf_pep8_profiles_views](readme_images/profiles_views_pep8.png)
+
+## Technologies Used
+
+### Languages
+
+- [Python](https://www.python.org/) - A high-level, general-purpose programming language
+
+### Libraries and Frameworks
+
+- [Django](https://pypi.org/project/Django/) - A high-level Python web framework that encourages rapid development and clean, pragmatic design.
+- [Django REST Framework](https://pypi.org/project/djangorestframework/) - A powerful and flexible toolkit for building Web APIs
+
+### Packages
+
+- [asgiref](https://pypi.org/project/asgiref/) -A standard for Python asynchronous web apps and servers to communicate with each other.
+- [cloudinary](https://pypi.org/project/cloudinary/) -  a powerful media API for websites and mobile apps.
+- [dj-database-url](https://pypi.org/project/dj-database-url/) - Django utility that allows to utilize the 12factor inspired DATABASE_URL environment variable to configure your Django application.
+- [dj-rest-auth](https://pypi.org/project/dj-rest-auth/) - API endpoints for handling authentication securely in Django Rest Framework.
+- [django-allauth](https://pypi.org/project/django-allauth/) - Integrated set of Django applications addressing authentication, registration, and account management.
+- [django-cloudinary-storage](https://pypi.org/project/django-cloudinary-storage/) - Django package that provides Cloudinary storage for both media and static files.
+- [django-cors-headers](https://pypi.org/project/django-cors-headers/) - A Django App that adds Cross-Origin Resource Sharing (CORS) headers to responses. It allows in-browser requests to the Django application from other origins.
+- [django-filter](https://pypi.org/project/django-filter/) -  A reusable Django application allowing users to declaratively add dynamic QuerySet filtering from URL parameters.
+- [djangorestframework-simplejwt](https://pypi.org/project/djangorestframework-simplejwt/) - A JSON Web Token authentication plugin for the Django REST Framework.
+- [gunicorn](https://pypi.org/project/gunicorn/) - a Python WSGI HTTP Server for UNIX.
+- [oauthlib](https://pypi.org/project/oauthlib/) - A framework that implements the logic of OAuth1 or OAuth2 without assuming a specific HTTP request object or web framework.
+- [Pillow](https://pypi.org/project/Pillow/) - A Python Imaging Library that adds support for opening, manipulating, and saving many different image file formats.
+- [psycopg2](https://pypi.org/project/psycopg2/) - PostgreSQL database adapter for Python.
+- [PyJWT](https://pypi.org/project/PyJWT/) - A Python library that allows you to encode and decode JSON Web Tokens (JWT).
+- [python3-openid](https://pypi.org/project/python3-openid/) - A set of Python packages to support the use of the OpenID decentralized identity system in your application.
+- [pytz](https://pypi.org/project/pytz/) - A library that allows accurate and cross-platform timezone calculations.
+- [requests-oauthlib](https://pypi.org/project/requests-oauthlib/) - OAuth library support for Requests.
+- [sqlparse](https://pypi.org/project/sqlparse/) -  A non-validating SQL parser for Python. It provides support for parsing, splitting, and formatting SQL statements.
+
+### Other Tools
+
+- [GitHub](https://github.com/) - Used to host and deploy the website as well as manage the project.
+- [GitPod](https://www.gitpod.io/) - A cloud development environment for teams to efficiently and securely develop software. I
+- [Heroku](https://dashboard.heroku.com) - Used to deploy the website
+- [SQLite](https://www.sqlite.org/index.html) - An open-source, zero-configuration, self-contained, stand-alone, transaction relational database engine designed to be embedded into an application.
+- [ElephantSQL](https://www.elephantsql.com/) -  A PostgreSQL database hosting service.
+It manages administrative tasks of PostgreSQL, such as installation, upgrades to the latest stable version, and backup handling. ElephantSQL is also integrated into several cloud application platforms (also known as PaaS).
+- [Cloudinary](https://cloudinary.com/) - Used to host all static files.
+- [Figma]() - A browser-based, collaborative user interface design tool used to create the ERD.
+- [CI PEP8 Linter](https://pep8ci.herokuapp.com/#) - Used to check the Python code for any linting issues.
+
+## Deployment
+
+The project was deployed to [Heroku](https://www.heroku.com). The deployment process is as follows:
+
+
+Create the database with [ElephantSQL](https://www.elephantsql.com/):
+
+- Log into ElephantSQL;
+- Click **Create New Instance**;
+- Give your plan a Name (the name of the project);
+- Select the **Tiny Turtle (Free)** plan;
+- Click **Select Region** and pick the data center closest to you;
+- Click **Review**, and check that your details are correct;
+- Click **Create instance**.
+
+Get the database URL:
+
+- Return to the ElephantSQL dashboard and click on the **database instance name** for this project;
+- In the URL section, click the copy icon;
+
+ Head to Heroku and create the app:
+Log into Heroku and go to the Dashboard;
+
+- Click **New**;
+- Click **Create new app**;
+- Give your app a unique name;
+- Select the region closest to you;
+- Click **Create app** to confirm.
+
+Connect the database to your app:
+
+- In the app, open the **Settings** tab;
+- Scroll down and click **Reveal Config Vars**;
+- Type in the KEY field **DATABASE_URL** and paste in the VALUE field the database - URL  from ElephantSQL (do not add quotation marks);
+- Click **Add**.
+
+Back in the Gitpod repository, we can set up the project to connect to the - ElephantSQL database, create the database tables by running migrations, and confirm that it all works by creating a superuser.
+
+- In the terminal, install dj_database_url and psycopg2 by typing: 
+      **pip3 install dj_database_url==0.5.0 psycopg2** ;
+- In the settings.py file, import dj_database_url underneath the import for os: **import dj_database_url** ;
+- Update the DATABASES section to the following:
+
+ if 'DEV' in os.environ:
+     DATABASES = {
+         'default': {
+             'ENGINE': 'django.db.backends.sqlite3',
+             'NAME': BASE_DIR / 'db.sqlite3',
+         }
+     }
+ else:
+     DATABASES = {
+         'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+     }
+
+- In your env.py file, add a new environment variable:
+
+ os.environ.setdefault("DATABASE_URL", "<ElephantSQL database URL here>")
+
+- Temporarily comment out the DEV environment variable so that Gitpod can connect to your external database: 
+
+ # os.environ['DEV'] = '1'
+
+- Back in your settings.py file, add a print statement to confirm you have connected to the external database in the else statement in the database section:
+
+ else:
+      DATABASES = {
+         'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+     }
+     **print("connected")**
+
+- To confirm that the external database is connected, type in the terminal:
+
+ -–dry-run your makemigrations
+
+ - If you see the **connected** message printed to the terminal the external database is connected, so you can delete the print statement and migrate your database models to your new database by typing in the terminal:
+
+ python manage.py migrate
+
+- Now create a superuser for your new database by typing in the terminal:
+
+ python3 manage.py createsuperuser
+
+- Follow the steps to create the superuser username and password;
+
+Now we head back to ElephantSQL to confirm that the data in the external database has been created.
+
+- On the ElephantSQL page for your database, in the left side navigation, select **BROWSER**;
+- Click **Table queries**;
+- Select **auth_user**;
+- Click **Execute**;
+- If the superuser details are displayed your tables have been created and you can add data to your database.
+
+Now we need to head back to our project to prepare it for deployment by installing a package to run the project on Heroku, fixing a few environment variables, and creating a Procfile file that will provide the commands to Heroku to build and run the project.
