@@ -23,11 +23,14 @@ You can view the front-end README.md here - <a href="https://github.com/MartinaP
       7. [Likes](#likes)
       8. [Profiles](#profiles)
 4. [Technologies used](#technologies-used)
-      1. [Languages](#languages)
-      2. [Libraries and Frameworks](#libraries-and-frameworks)
-      3. [Packages](#packages)
-      4. [Other tools](#other-tools)
-5. [Deployment]
+    1. [Languages](#languages)
+    2. [Libraries and Frameworks](#libraries-and-frameworks)
+    3. [Packages](#packages)
+    4. [Other tools](#other-tools)
+5. [Deployment](#deployment)
+     1. [Deployment to Heroku](#deployment-to-heroku)
+     2. [Local deployment](#local-deployment)
+
 
 ## Project goals
 
@@ -453,6 +456,13 @@ The can also update the gallery, but not delete it or create it, since it create
 **views.py**
 ![onlyevents_drf_pep8_profiles_views](readme_images/profiles_views_pep8.png)
 
+## Bugs
+
+- On the front-end project, the forms weren't displaying the error messages. Looking at the API I realized that in the Categories, Events, and  Profiles serializers, I missed raising the ValidartionError in case of an IntegrityError. Adding them fixed the issue;
+- When trying to view the app after the successful deployment, it would open a page displaying an "Application error" message.
+After a thorough check, I realized that I miss-spelled the name of my project in the Procfile. Correcting the spelling fixed the issue.
+
+
 ## Technologies Used
 
 ### Languages
@@ -498,6 +508,8 @@ It manages administrative tasks of PostgreSQL, such as installation, upgrades to
 - [CI PEP8 Linter](https://pep8ci.herokuapp.com/#) - Used to check the Python code for any linting issues.
 
 ## Deployment
+
+### Deployment to Heroku
 
 The project was deployed to [Heroku](https://www.heroku.com). The deployment process is as follows:
 
@@ -591,3 +603,128 @@ Now we head back to ElephantSQL to confirm that the data in the external databas
 - If the superuser details are displayed your tables have been created and you can add data to your database.
 
 Now we need to head back to our project to prepare it for deployment by installing a package to run the project on Heroku, fixing a few environment variables, and creating a Procfile file that will provide the commands to Heroku to build and run the project.
+
+-In the terminal of the GitPod workspace, install gunicorn by typing:
+
+ pip3 install gunicorn django-cors-headers
+
+- Update your requirements.txt by typing in the terminal:
+
+ pip freeze --local > requirements.txt
+
+- In the root, create the **Procfile**.  It must be named correctly and not have any file extension;
+- Inside the Procfile, add these two commands
+
+ release: python manage.py makemigrations && python manage.py migrate
+ web: gunicorn <name of your project>.wsgi
+
+- In  settings.py, update the value of the **ALLOWED_HOSTS** variable:
+
+ ALLOWED_HOSTS = ['localhost', '<your_app_name>.herokuapp.com']
+
+ - Add corsheaders to **INSTALLED_APPS**:
+
+ INSTALLED_APPS = [
+    ...
+    'dj_rest_auth.registration',
+    'corsheaders',
+    ...
+ ]
+
+- Add corsheaders middleware to the TOP of the **MIDDLEWARE**:
+
+ SITE_ID = 1
+ MIDDLEWARE = [
+     'corsheaders.middleware.CorsMiddleware',
+     ...
+ ]
+
+- Under the **MIDDLEWARE** list, set the ALLOWED_ORIGINS for the network requests made to the server with the following code:
+
+ if 'CLIENT_ORIGIN' in os.environ:
+     CORS_ALLOWED_ORIGINS = [
+         os.environ.get('CLIENT_ORIGIN')
+     ]
+ else:
+     CORS_ALLOWED_ORIGIN_REGEXES = [
+         r"^https://.*\.gitpod\.io$",
+     ]
+
+- Enable sending cookies in cross-origin requests so that users can get authentication functionality by adding under the previous code:
+
+ CORS_ALLOW_CREDENTIALS = True
+
+- To be able to have the front-end app and the API deployed to different platforms, set the JWT_AUTH_SAMESITE attribute to **None**:
+
+ JWT_AUTH_COOKIE = 'my-app-auth'
+ JWT_AUTH_REFRESH_COOKE = 'my-refresh-token'
+ JWT_AUTH_SAMESITE = 'None'
+
+- Remove the value for SECRET_KEY and replace it with the following code to use an environment variable instead:
+
+ SECRET_KEY = os.getenv('SECRET_KEY')
+
+- Set a NEW value for your **SECRET_KEY** environment variable in env.py:
+
+ os.environ.setdefault("SECRET_KEY", "CreateANEWRandomValueHere")
+
+- Set the DEBUG value to be True only if the DEV environment variable exists. This will mean it is True in development, and False in production:
+
+ DEBUG = 'DEV' in os.environ
+
+- Comment DEV back in env.py:
+
+ os.environ['DEV'] = '1'
+
+- Ensure the project requirements.txt file is up to date by typing in the terminal: 
+ 
+ pip freeze --local > requirements.txt
+
+- Add, commit and push your code to GitHub.
+
+Now we can deploy the project on Heroku:
+
+- On the Heroku dashboard of your new app, open the **Settings** tab;
+- Click **Reveal Config Vars** ;
+- Add:
+KEY field: **SECRET_KEY**, VALUE field:  make one up a secret key, but don’t use the one that was originally in the settings.py file!
+KEY field: **CLOUDINARY_URL**, VALUE field: copy in your Cloudinary URL from your env.py file (do not add quotation marks!)
+
+- Open the **Deploy** tab;
+- In the **Deployment method** section, select **Connect to GitHub**;
+- Search for your repo by typing its name on the **repo-name** field;
+- Click **Connect**;
+- Scroll down to the  **Manual deploy** section and click **Deploy Branch; this will start the build process.
+- When the build is finished, it will display the success message **Your app was successfully deployed**!
+
+### Local deployment
+
+To work on the code from a local device, the steps to fork/clone the repository are as follows:
+
+**Fork**
+
+- In the top-right corner of the GitHub repository, click Fork;
+- Select an owner for the forked repository;
+- By default, forks are named the same as their upstream repositories, but you can change the name of the fork;
+- Optionally, add a description of your fork;
+- Choose whether to copy only the default branch or all branches to the new fork;
+- Click Create fork.
+
+**Clone**
+
+- In the GitHub repository, above the list of files, click  **Code**;
+- Copy the URL for the repository;
+  - To clone the repository using HTTPS, under "HTTPS", click the copy icon.
+  - To clone the repository using an SSH key, including a certificate issued by your organization's SSH certificate authority, click SSH, then click the copy icon.
+  - To clone a repository using GitHub CLI, click GitHub CLI, then click the copy icon.
+- Open Git Bash.
+- Change the current working directory to the location where you want the cloned directory.
+- Type **git clone**, and then paste the URL you copied earlier.
+- Press **Enter**. Your local clone will be created.
+
+## Credits
+
+- [Code Institute](https://codeinstitute.net/) DRF-API walkthrough project 
+- [Django REST Framework Documentation](https://www.django-rest-framework.org/api-guide/permissions/) 
+- [Stackoverflow](https://stackoverflow.com/)
+- I would also like to thank my mentor Marcel for the support!
