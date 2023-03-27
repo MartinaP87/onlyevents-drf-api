@@ -2,7 +2,7 @@
 
 This repository is the back-end REST API used by the front-end project Only Events.
 
-Visit the deployed website here - <a href="https://onyevents87.herokuapp.com/" target="_blank" rel="noopener">Only Events</a>.
+Visit the deployed website here - <a href="https://onlyevents.herokuapp.com/" target="_blank" rel="noopener">Only Events</a>.
 
 Visit the deployed API here - <a href="https://onlyevents-drf-api.herokuapp.com/" target="_blank" rel="noopener">Only Events</a>.
 
@@ -695,7 +695,102 @@ KEY field: **CLOUDINARY_URL**, VALUE field: copy in your Cloudinary URL from you
 - Search for your repo by typing its name on the **repo-name** field;
 - Click **Connect**;
 - Scroll down to the  **Manual deploy** section and click **Deploy Branch; this will start the build process.
-- When the build is finished, it will display the success message **Your app was successfully deployed**!
+- When the build is finished, it will display the success message **Your app was successfully deployed**
+
+Now, since dj-rest-auth has a bug that doesn’t allow users to log out, we have to write the logout view, where we set both cookies to an empty string and pass additional attributes like secure, httponly, and samesite, which was left out by mistake by the library.
+The steps to do are the following:
+
+- In drf_api/views.py, import JWT_AUTH settings from settings.py like so:
+- In drf_api/views.py, import JWT_AUTH settings from settings.py like so:
+Under **from rest_framework.response import Response** type:
+
+ from .settings import (
+    JWT_AUTH_COOKIE, JWT_AUTH_REFRESH_COOKIE,
+    JWT_AUTH_SAMESITE, JWT_AUTH_SECURE, )
+
+- Write a logout view. Looks like quite a bit, but all that’s happening here is that we’re setting the value of both the access token (JWT_AUTH_COOKIE) and refresh token (JWT_AUTH_REFRESH_COOKIE) to empty strings. We also pass samesite=JWT_AUTH_SAMESITE, which we set to ’None’ in settings.py and make sure the cookies are httponly and sent over HTTPS:
+
+ @api_view(['POST'])
+ def logout_route(request):
+     response = Response()
+     response.set_cookie(
+         key=JWT_AUTH_COOKIE,
+         value='',
+         httponly=True,
+         expires='Thu, 01 Jan 1970 00:00:00 GMT',
+         max_age=0,
+         samesite=JWT_AUTH_SAMESITE,
+         secure=JWT_AUTH_SECURE,
+     )
+     response.set_cookie(
+         key=JWT_AUTH_REFRESH_COOKIE,
+         value='',
+         httponly=True,
+         expires='Thu, 01 Jan 1970 00:00:00 GMT',
+         max_age=0,
+         samesite=JWT_AUTH_SAMESITE,
+         secure=JWT_AUTH_SECURE,
+     )
+     return response
+
+- Now import the logout_route and include the logout view in drf_api/urls.py. It's important to place the logout_route above the default dj-rest-auth urls, so that it is matched first. Under **from django.urls import path, include**, type:
+
+ from .views import root_route, logout_route
+
+- In the urlpatterns list:
+
+ path('dj-rest-auth/logout/', logout_route),
+ path('dj-rest-auth/', include('dj_rest_auth.urls')),
+
+- Add, commit, and push your code to Gitpod.
+- Return to Heroku, in the Deploy tab, and Manually Deploy your code again.
+
+To use this API with a React project, we have to add two environment variables in the SETTINGS.py file.
+ALLOWED_HOST, so that it’s not hardcoded and you could spin up multiple API instances, as they would all be deployed to different URLs.
+CLIENT_ORIGIN_DEV, so that you can access your deployed API when developing the client-side app in gitpod.
+
+- In settings.py, in the ALLOWED_HOSTS list, copy your ‘... .herokuapp.com’ string.
+ ALLOWED_HOSTS = [
+    '... .herokuapp.com',
+    'localhost',
+ ]
+- Log in to heroku.com and select your API application.
+- Click “settings”
+- Click “Reveal config vars”
+ -Add:
+  KEY field: **ALLOWED_HOST** VALUE field: **your deployed Heroku application URL that we copied from settings.py**
+- Back in settings.py, replace your ALLOWED HOSTS list '... .herokuapp.com' string we just copied with the ALLOWED_HOST environment variable by writing:
+
+ ALLOWED_HOSTS = [
+   os.environ.get('ALLOWED_HOST'),
+   'localhost',
+]
+
+To make our application more secure and accommodate the way Gitpod works by changing the workspace URL regularly we could:
+ * Extract the unique part of the gitpod preview URL when the CLIENT_ORIGIN_DEV environment variable is defined;
+ * Include it in the regular expression provided so that the gitpod workspace is still connected to our API when gitpod rotates the workspace URL.
+Import the regular expression module at the top of your settings.py file. We will need this to manipulate the CLIENT_ORIGIN_DEV URL string.
+
+- Import the regular expression module at the top of your settings.py file:
+
+ import re
+
+- Replace the else statement and body for if 'CLIENT_ORIGIN' in os.environ: with the following code:
+ if 'CLIENT_ORIGIN_DEV' in os.environ:
+    extracted_url = re.match(r'^.+-', os.environ.get('CLIENT_ORIGIN_DEV', ''), re.IGNORECASE).group(0)
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        rf"{extracted_url}(eu|us)\d+\w\.gitpod\.io$",
+    ]
+
+This code snippet allows our API to talk to our development environment.
+The value for CLIENT_ORIGIN_DEV will be set to the gitpod preview URL of the front end project.
+
+- Git add, commit and push the changes to your settings.py file to GitHub;
+- Return to your Heroku application for this API project;
+- Click on the “Deploy” tab;
+- Scroll down and click “Deploy branch”;
+
+Now the project is set up and ready to be used with a React project.
 
 ### Local deployment
 
