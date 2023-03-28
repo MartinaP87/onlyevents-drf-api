@@ -15,6 +15,7 @@ class CategoryList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    pagination_class = None
 
     def perform_create(self, serializer):
         if self.request.user.is_superuser:
@@ -39,6 +40,7 @@ class GenreList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = GenreSerializer
     queryset = Genre.objects.all()
+    pagination_class = None
 
     filter_backends = [
         DjangoFilterBackend
